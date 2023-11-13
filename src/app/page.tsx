@@ -84,16 +84,14 @@ export default function Home() {
                     <label className="text-xl text-black font-bold mt-10">So we know where to drop off the stuff</label>
                     <label className="mt-3">We won´t share your address</label>
                     <label className="mb-10">with your ex (or whoever).</label>
-                    <div className="custom-select-container relative mt-10 flex items-center justify-center w-60 mx-auto">
-                        <div className="bg-white h-full flex">
-                            <Image
-                                src="/assets/icons/map-pin.png"
-                                alt="nada"
-                                width={20}
-                                height={25}
-                                className="mobile-position mr-2"
-                            />
-                        </div>
+                    <div className="custom-select-container relative flex items-center justify-center p-5">
+                        <Image
+                            src="/assets/icons/map-pin.png"
+                            alt="nada"
+                            width={20}
+                            height={25}
+                            className="mobile-position mr-2"
+                        />
 
                         <DynamicSelect
                             options={options}
