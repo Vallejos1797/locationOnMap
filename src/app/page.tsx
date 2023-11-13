@@ -1,5 +1,6 @@
 "use client"
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 import { useState} from "react";
 import 'reactjs-popup/dist/index.css';
@@ -16,13 +17,46 @@ export default function Home() {
     const [searchValue, setSearchValue] = useState("");
 
     const customStyles = {
-        // Estilos personalizados aquí...
+        control: (styles) => ({
+            ...styles,
+            border: 'none',
+            boxShadow: 'none',
+            borderBottom:  'none',
+            borderRadius: '0',
+            position: 'relative',
+
+        }),
+        input: (styles) => ({
+            ...styles,
+            height: '40px',
+            border: 'none',
+        }),
+        dropdownIndicator: (styles) => ({
+            ...styles,
+            display: 'none', // Oculta la flecha
+        }),
+        indicatorSeparator: (styles) => ({
+            ...styles,
+            display: 'none', // Oculta la línea separadora
+        }),
     };
 
-    const customComponents = {}
+    const CustomOption = ({ innerProps, label }) => (
+        <div {...innerProps} style={{ display: 'flex', alignItems: 'center' }}>
+            <Image
+                src="/assets/icons/map-pin-gray.png"
+                alt="nada"
+                width={20}
+                height={20}
+            />
+            {label}
+        </div>
+    );
 
     const options = [
         {value: "option1", label: "Option 1"},
+        {value: "value", label: "value"},
+        {value: "value", label: "value"},
         {value: "value", label: "value"},
         {value: "test", label: "test"},
     ];
@@ -50,19 +84,31 @@ export default function Home() {
                     <label className="text-xl text-black font-bold mt-10">So we know where to drop off the stuff</label>
                     <label className="mt-3">We won´t share your address</label>
                     <label className="mb-10">with your ex (or whoever).</label>
-                    <div>
+                    <div className="custom-select-container relative mt-10 flex items-center justify-center w-60 mx-auto">
+                        <div className="bg-white h-full flex">
+                            <Image
+                                src="/assets/icons/map-pin.png"
+                                alt="nada"
+                                width={20}
+                                height={25}
+                                className="mobile-position mr-2"
+                            />
+                        </div>
+
                         <DynamicSelect
                             options={options}
                             styles={customStyles}
-                            components={customComponents}
+                            components={{ Option: CustomOption }}
                             placeholder="Search Location"
                             onInputChange={handleInputChange}
                             onChange={handleChange}
                             value={selectedOption}
                             menuIsOpen={searchValue.length > 0}
-
+                            isSearchable
+                            className="w-full" // Asegura que el input se expanda completamente en su contenedor
                         />
                     </div>
+
 
                 </div>
 
