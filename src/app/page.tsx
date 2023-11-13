@@ -1,41 +1,27 @@
-import TodoList from "@/app/components/LocationList";
-import AddLocation from "@/app/components/AddLocation";
-import {ILocation} from "../../types/location";
-// import { getAllLocation } from "@/api";
+"use client"
 import Select from "react-select";
 
-export default async function Home() {
-    const locations: ILocation[] = [
-        {
-            id: "1",
-            text: "Location 1",
-        },
-        {
-            id: "2",
-            text: "Location 2",
-        },
-
+async function Home(){
+    const options = [
+        {value: "option1", label: "Option 1"},
+        {value: "option2", label: "Option 2"},
+        {value: "option3", label: "Option 3"},
+        // Agrega más opciones según sea necesario
     ];
     return (
-        <div className="bg-gray-200 min-h-screen">
+        <div className=" min-h-screen">
             <main className="max-w-4xl mx-auto mt-4 p-4">
-                <div className="text-center my-5 flex flex-col gap-4">
-                    <h1 className="text-2xl text-black font-bold">Where are you located?</h1>
-                    <h3 className="text-2xl  text-black font-bold">So we know where to drop the stuff</h3>
-                    <h4 className="text-2xl">We won´t share your address</h4>
-                    <h5 className="text-2xl">with your ex(or whoere)</h5>
-                    <div className="max-w-2xl mx-auto mt-4">
-                        <Select
-                            value={selectedOption}
-                            onChange={handleChange}
-                            options={options}
-                            isSearchable={true}
-                            placeholder="Selecciona una opción..."
-                        />
+                <div className="text-center my-5 flex flex-col ">
+                    <label className="text-3xl text-black font-bold">Where are you located?</label>
+                    <label className="text-xl text-black font-bold mt-10">So we know where to drop off the stuff</label>
+                    <label className="mt-3">We won´t share your address</label>
+                    <label className="mb-10">with your ex (or whoever).</label>
+                    <div>
+                        <Select options={options}/>
                     </div>
-                    <AddLocation/>
+                    {/*<AddLocation/>*/}
                 </div>
-                <TodoList locations={locations}/>
+                {/*<TodoList locations={locations}/>*/}
             </main>
         </div>
     )
