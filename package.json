@@ -17,7 +17,9 @@
     "react-dom": "^18",
     "react-icons": "^4.11.0",
     "react-select": "^5.8.0",
-    "uuid": "^9.0.1"
+    "reactjs-popup": "^2.0.6",
+    "uuid": "^9.0.1",
+    "vercel": "^32.5.3"
   },
   "devDependencies": {
     "@types/node": "^20",

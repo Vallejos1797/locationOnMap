@@ -1,21 +1,18 @@
+// Modal.js
 import React from "react";
 
-interface ModalProps {
-    modalOpen: boolean;
-    setModalOpen: (open: boolean) => boolean | void;
-    children: React.ReactNode;
-}
-
-const Modal: React.FC<ModalProps> = ({ modalOpen, setModalOpen, children }) => {
+const Modal = ({ onClose, children }) => {
     return (
-        <div className={`modal ${modalOpen ? "modal-open" : ""}`}>
-            <div className='modal-box relative'>
-                <label
-                    onClick={() => setModalOpen(false)}
-                    className='btn btn-sm btn-circle absolute right-2 top-2'
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-black opacity-50"></div>
+            <div className="bg-white p-8 rounded shadow-md z-50">
+                <button
+                    className="absolute top-4 right-4 text-gray-500 hover:text-black cursor-pointer"
+                    onClick={onClose}
                 >
-                    ✕
-                </label>
+                    Cerrar
+                </button>
+                <h1> aqui llega</h1>
                 {children}
             </div>
         </div>
