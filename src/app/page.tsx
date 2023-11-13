@@ -1,8 +1,7 @@
 "use client"
 import dynamic from 'next/dynamic';
 
-import {useEffect, useState} from "react";
-import Modal from "@/app/components/Modal";
+import { useState} from "react";
 import 'reactjs-popup/dist/index.css';
 import Popup from 'reactjs-popup';
 import {AiOutlineClose} from "react-icons/ai";
@@ -15,7 +14,6 @@ export default function Home() {
     const [selectedOption, setSelectedOption] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
-    const [uniqueId, setUniqueId] = useState(null);
 
     const customStyles = {
         // Estilos personalizados aquí...
@@ -25,27 +23,23 @@ export default function Home() {
 
     const options = [
         {value: "option1", label: "Option 1"},
-        {value: "value", label: "Option 2"},
-        {value: "test", label: "Option 3"},
+        {value: "value", label: "value"},
+        {value: "test", label: "test"},
     ];
-    const handleInputChange = (inputValue, {action}) => {
+    const handleInputChange = (inputValue: any, {action}: any) => {
         setSearchValue(inputValue)
         if (action === 'input-change' && inputValue && !selectedOption) {
             setMenuIsOpen(true);
         }
     };
-    const handleChange = (selectedOption) => {
+    const handleChange = (selectedOption: any) => {
         setSelectedOption(selectedOption);
         setModalOpen(true);
-
     };
-
     const closeModal = () => {
         setModalOpen(false);
+        return false;
     };
-    useEffect(() => {
-        setUniqueId(`popup-${Math.floor(Math.random() * 1000)}`);
-    }, []);
 
 
     return (
@@ -74,18 +68,19 @@ export default function Home() {
 
                 <Popup
                     open={isModalOpen}
-                    trigger={<button className="button"> Open Modal </button>}
+
                     modal
                     nested
                     contentStyle={{maxWidth: '500px',}}
+                    closeOnDocumentClick={true}
                 >
-                    {close => (
+
                         <div className="modal text-right">
-                            <button onClick={closeModal}
+                            <button
                                     style={{color: 'gray', fontWeight: 'bold'}}
                                     className="close-button">
                                 <AiOutlineClose
-                                    onClick={close}
+                                    onClick={closeModal}
                                     cursor='pointer'
                                     className='text-black-500'
                                     size={25}
@@ -124,11 +119,12 @@ export default function Home() {
                                          hover:border-pink-300
                                          hover:text-pink-300
                                   "
+                                        onClick={closeModal}
                                 >UNDERSTOOD
                                 </button>
                             </div>
                         </div>
-                    )}
+
                 </Popup>
 
 
