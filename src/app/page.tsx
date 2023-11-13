@@ -17,7 +17,7 @@ export default function Home() {
     const [searchValue, setSearchValue] = useState("");
 
     const customStyles = {
-        control: (styles) => ({
+        control: (styles:any) => ({
             ...styles,
             border: 'none',
             boxShadow: 'none',
@@ -26,22 +26,22 @@ export default function Home() {
             position: 'relative',
 
         }),
-        input: (styles) => ({
+        input: (styles:any) => ({
             ...styles,
             height: '40px',
             border: 'none',
         }),
-        dropdownIndicator: (styles) => ({
+        dropdownIndicator: (styles:any) => ({
             ...styles,
             display: 'none', // Oculta la flecha
         }),
-        indicatorSeparator: (styles) => ({
+        indicatorSeparator: (styles:any) => ({
             ...styles,
             display: 'none', // Oculta la línea separadora
         }),
     };
 
-    const CustomOption = ({ innerProps, label }) => (
+    const CustomOption = ({ innerProps, label }:any) => (
         <div {...innerProps} style={{ display: 'flex', alignItems: 'center' }}>
             <Image
                 src="/assets/icons/map-pin-gray.png"
