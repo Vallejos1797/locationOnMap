@@ -1,16 +1,21 @@
 "use client"
-import Select from "react-select";
-import {useState} from "react";
+import dynamic from 'next/dynamic';
+
+import {useEffect, useState} from "react";
 import Modal from "@/app/components/Modal";
 import 'reactjs-popup/dist/index.css';
 import Popup from 'reactjs-popup';
 import {AiOutlineClose} from "react-icons/ai";
+
+const DynamicSelect = dynamic(() => import('react-select'), {ssr: false});
 
 export default function Home() {
 
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const [uniqueId, setUniqueId] = useState(null);
 
     const customStyles = {
         // Estilos personalizados aquí...
@@ -22,14 +27,11 @@ export default function Home() {
         {value: "option1", label: "Option 1"},
         {value: "value", label: "Option 2"},
         {value: "test", label: "Option 3"},
-        // Agrega más opciones según sea necesario
     ];
     const handleInputChange = (inputValue, {action}) => {
-
+        setSearchValue(inputValue)
         if (action === 'input-change' && inputValue && !selectedOption) {
             setMenuIsOpen(true);
-
-
         }
     };
     const handleChange = (selectedOption) => {
@@ -41,6 +43,10 @@ export default function Home() {
     const closeModal = () => {
         setModalOpen(false);
     };
+    useEffect(() => {
+        setUniqueId(`popup-${Math.floor(Math.random() * 1000)}`);
+    }, []);
+
 
     return (
         <div className=" min-h-screen">
@@ -51,7 +57,7 @@ export default function Home() {
                     <label className="mt-3">We won´t share your address</label>
                     <label className="mb-10">with your ex (or whoever).</label>
                     <div>
-                        <Select
+                        <DynamicSelect
                             options={options}
                             styles={customStyles}
                             components={customComponents}
@@ -59,28 +65,25 @@ export default function Home() {
                             onInputChange={handleInputChange}
                             onChange={handleChange}
                             value={selectedOption}
+                            menuIsOpen={searchValue.length > 0}
+
                         />
                     </div>
 
-                    {isModalOpen && (
-                        <Modal onClose={closeModal}>
-                            {/* Contenido de tu modal */}
-                            <p>Opción seleccionada: {selectedOption ? selectedOption.label : 'Ninguna'}</p>
-                        </Modal>
-                    )}
                 </div>
 
                 <Popup
-
+                    open={isModalOpen}
                     trigger={<button className="button"> Open Modal </button>}
                     modal
                     nested
-                    contentStyle={{ maxWidth: '500px', }}
+                    contentStyle={{maxWidth: '500px',}}
                 >
                     {close => (
-                        <div className="modal text-right" >
-                            <button onClick={close} style={{ color: 'gray', fontWeight: 'bold' }} className="close-button">
-
+                        <div className="modal text-right">
+                            <button onClick={closeModal}
+                                    style={{color: 'gray', fontWeight: 'bold'}}
+                                    className="close-button">
                                 <AiOutlineClose
                                     onClick={close}
                                     cursor='pointer'
@@ -92,14 +95,16 @@ export default function Home() {
                                 <h1 className="text-xl text-black font-bold m-5">Address updated</h1>
                                 <h2 className="text-base text-black font-bold m-4 ">New address to your account</h2>
                                 <h2 className="mt-3   text-base">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut emin ad minim veniam, quis nortrud exercitation ulloamco.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut emin ad minim veniam, quis nortrud
+                                    exercitation ulloamco.
                                 </h2>
                                 <h2 className="text-black text-base m-4">Nisi ut aliquip ex ea commodo consequat</h2>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
                             </div>
                             <div className="footer text-center mt-5">
                                 <button type="button"
