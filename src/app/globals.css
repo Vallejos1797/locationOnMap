@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* styles/globals.css */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 /* styles.css o styles.scss */
 body {
     background-color:#f1f2f4; /* Cambia el color de fondo a gris (#f0f0f0) o el color que prefieras */
@@ -40,5 +42,8 @@ body {
     border-radius: 18px;
     border: 1px solid #cfcece;
 }
-
+.custom-input:focus {
+    outline: none;
+    border: none;
+}
 
