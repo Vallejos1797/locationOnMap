@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image';
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import 'reactjs-popup/dist/index.css';
 import Popup from 'reactjs-popup';
 import {AiOutlineClose, AiFillCloseCircle} from "react-icons/ai";
@@ -16,6 +16,28 @@ export default function Home() {
         {value: 5, label: 'ATUN 2023', label2: 'ATUN 2023'},
         {value: 6, label: 'Alla 2023', label2: 'Alla 2023'},
     ];
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Define el umbral para determinar si estás en un dispositivo móvil
+            const mobileThreshold = 768; // Puedes ajustar este valor según tus necesidades
+
+            // Actualiza el estado basado en el ancho de la ventana
+            setIsMobile(window.innerWidth < mobileThreshold);
+        };
+
+        // Ejecuta la lógica de manejo de tamaño inicial
+        handleResize();
+
+        // Agrega un event listener para manejar cambios de tamaño de ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpia el event listener cuando el componente se desmonta
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const [items, setItems] = useState(datos);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -40,10 +62,10 @@ export default function Home() {
         }
     };
     const openModal = (object: any) => {
-        console.log('-->abre',menuIsOpen)
+        console.log('-->abre', menuIsOpen)
         setSearchValue(object.label);
         setModalOpen(true);
-        console.log('-->abre2',menuIsOpen)
+        console.log('-->abre2', menuIsOpen)
 
         setMenuIsOpen(false);
         console.log('El  ha sido clicado', object);
@@ -128,10 +150,12 @@ export default function Home() {
 
                 <Popup
                     open={isModalOpen}
-
                     modal
                     nested
-                    contentStyle={{maxWidth: '400px',}}
+                    contentStyle={{
+                        maxWidth: 'lg:max-w-screen-sm sm:max-w-screen-md', width: isMobile ? '80%' : '30%',
+                    }}
+
                     closeOnDocumentClick={true}
                 >
 
@@ -143,7 +167,7 @@ export default function Home() {
                                 onClick={closeModal}
                                 cursor='pointer'
                                 className='text-black'
-                                size={22}
+                                size={20}
                             />
                         </button>
                         <div className=" mx-auto text-center mb-5 p-2">
