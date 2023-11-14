@@ -20,20 +20,11 @@ export default function Home() {
 
     useEffect(() => {
         const handleResize = () => {
-            // Define el umbral para determinar si estás en un dispositivo móvil
-            const mobileThreshold = 768; // Puedes ajustar este valor según tus necesidades
-
-            // Actualiza el estado basado en el ancho de la ventana
+            const mobileThreshold = 768;
             setIsMobile(window.innerWidth < mobileThreshold);
         };
-
-        // Ejecuta la lógica de manejo de tamaño inicial
         handleResize();
-
-        // Agrega un event listener para manejar cambios de tamaño de ventana
         window.addEventListener('resize', handleResize);
-
-        // Limpia el event listener cuando el componente se desmonta
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -55,34 +46,23 @@ export default function Home() {
         setSearchValue(inputValue)
         if (inputValue) {
             setItems(datos.filter((objeto: any) => objeto.label.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 3));
-            console.log('Input value:', inputValue);
             setMenuIsOpen(true);
         } else {
             setMenuIsOpen(false);
         }
     };
     const openModal = (object: any) => {
-        console.log('-->abre', menuIsOpen)
         setSearchValue(object.label);
         setModalOpen(true);
-        console.log('-->abre2', menuIsOpen)
-
         setMenuIsOpen(false);
-        console.log('El  ha sido clicado', object);
     };
 
     const closeModal = () => {
         setModalOpen(false);
-        console.log('-->cerro', menuIsOpen)
-
     };
     const clearInput = () => {
         setSearchValue('');
         setMenuIsOpen(false);
-
-
-        // Lógica para limpiar el input
-        // Puedes utilizar setSearchValue('') u otra lógica según tus necesidades
     };
 
 
@@ -136,8 +116,7 @@ export default function Home() {
                                             </div>
                                             <div>
                                                 <h1 className="text-base font-bold mb-2">{objeto.label}</h1>
-                                                <h1 className="ml-0 text-sm font-bold text-[#9098a4ff] mb-2">{objeto.labe2l}
-                                                    Bordausx</h1>
+                                                <h1 className="ml-0 text-sm font-bold text-[#9098a4ff] mb-2">{objeto.label2}</h1>
                                             </div>
                                         </div>
                                     </li>
@@ -187,31 +166,29 @@ export default function Home() {
                         </div>
                         <div className="footer text-center mt-5">
                             <button type="button"
-                                    className="py-2.5
-                                         w-1/2
-                                         px-5 me-2
-                                         mb-2
-                                         text-sm
-                                         font-medium
-                                         bg-pink-300
-                                         text-white
-                                         focus:outline-none
-                                         rounded-full
-                                         border
-                                         border-gray-200
-                                         hover:bg-white
-                                         hover:border-pink-300
-                                         hover:text-pink-300
+                                    className="
+                                     py-2.5
+                                     w-1/2
+                                     px-5 me-2
+                                     mb-2
+                                     text-sm
+                                     font-medium
+                                     bg-pink-300
+                                     text-white
+                                     focus:outline-none
+                                     rounded-full
+                                     border
+                                     border-gray-200
+                                     hover:bg-white
+                                     hover:border-pink-300
+                                     hover:text-pink-300
                                   "
                                     onClick={closeModal}
                             >UNDERSTOOD
                             </button>
                         </div>
                     </div>
-
                 </Popup>
-
-
             </main>
         </div>
     )
