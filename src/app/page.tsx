@@ -40,16 +40,19 @@ export default function Home() {
         }
     };
     const openModal = (object: any) => {
+        console.log('-->abre',menuIsOpen)
         setSearchValue(object.label);
         setModalOpen(true);
+        console.log('-->abre2',menuIsOpen)
+
         setMenuIsOpen(false);
-        if (searchValue)
-            // Aquí puedes colocar la lógica de la función que deseas activar
-            console.log('El  ha sido clicado', object);
+        console.log('El  ha sido clicado', object);
     };
 
     const closeModal = () => {
         setModalOpen(false);
+        console.log('-->cerro', menuIsOpen)
+
     };
     const clearInput = () => {
         setSearchValue('');
@@ -101,7 +104,7 @@ export default function Home() {
                         </div>
                         {menuIsOpen && (
                             <ul className=" text-lg font-bold w-full bg-white">
-                                {items.map((objeto:any) => (
+                                {items.map((objeto: any) => (
                                     <li key={objeto.value} className="border-t border-gray-300"
                                         onClick={() => openModal(objeto)}>
                                         <div className="flex items-center p-3 ">
