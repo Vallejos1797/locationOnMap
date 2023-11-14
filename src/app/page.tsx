@@ -4,34 +4,60 @@ import Image from 'next/image';
 import {useState} from "react";
 import 'reactjs-popup/dist/index.css';
 import Popup from 'reactjs-popup';
-import {AiOutlineClose} from "react-icons/ai";
+import {AiOutlineClose, AiFillCloseCircle} from "react-icons/ai";
 
 
 export default function Home() {
+    let datos = [
+        {value: 1, label: '875 Bordausx', label2: '875 Bordausx'},
+        {value: 2, label: 'Quito 2023', label2: 'Quito 2023'},
+        {value: 3, label: 'Ibarra 2023', label2: 'Ibarra 2023'},
+        {value: 4, label: 'Otavalito 2023', label2: 'Otavalito 2023'},
+        {value: 5, label: 'ATUN 2023', label2: 'ATUN 2023'},
+        {value: 6, label: 'Alla 2023', label2: 'Alla 2023'},
+    ];
 
+    const [items, setItems] = useState(datos);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
 
-    const handleInput = (event:any) => {
+    const focusInput = () => {
+        if (searchValue) {
+            setMenuIsOpen(true);
+        }
+    }
+
+    const handleInput = (event: any) => {
         const inputValue = event.target.value;
         setSearchValue(inputValue)
         if (inputValue) {
+            setItems(datos.filter((objeto: any) => objeto.label.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 3));
             console.log('Input value:', inputValue);
             setMenuIsOpen(true);
         } else {
             setMenuIsOpen(false);
         }
     };
-    const openModal = () => {
+    const openModal = (object: any) => {
+        setSearchValue(object.label);
         setModalOpen(true);
-
-        // Aquí puedes colocar la lógica de la función que deseas activar
-        console.log('El <li> ha sido clicado');
+        setMenuIsOpen(false);
+        if (searchValue)
+            // Aquí puedes colocar la lógica de la función que deseas activar
+            console.log('El  ha sido clicado', object);
     };
 
     const closeModal = () => {
         setModalOpen(false);
+    };
+    const clearInput = () => {
+        setSearchValue('');
+        setMenuIsOpen(false);
+
+
+        // Lógica para limpiar el input
+        // Puedes utilizar setSearchValue('') u otra lógica según tus necesidades
     };
 
 
@@ -40,9 +66,10 @@ export default function Home() {
             <main className="max-w-4xl mx-auto mt-4 p-4">
                 <div className="text-center my-5 flex flex-col ">
                     <label className="text-2xl text-black font-bold">Where are you located?</label>
-                    <label className="text-base text-black font-bold mt-10">So we know where to drop off the stuff</label>
-                    <label className="mt-3 text-[#9098a4ff]">We won´t share your address</label>
-                    <label className="mb-10 text-[#9098a4ff]">with your ex (or whoever).</label>
+                    <label className="text-base text-black font-bold mt-10">So we know where to drop off the
+                        stuff</label>
+                    <label className=" text-sm mt-3 text-[#9098a4ff]">We won´t share your address</label>
+                    <label className="text-sm mb-10 text-[#9098a4ff]">with your ex (or whoever).</label>
                     <div className=" shadow-black shadow  opacity-75">
                         <div className="relative">
                             <div className="flex items-center ">
@@ -56,25 +83,40 @@ export default function Home() {
                                     className="pl-10 p-4 text-base font-bold  w-full custom-input"
                                     onInput={handleInput}
                                     value={searchValue}
+                                    onFocus={focusInput}
                                 />
+                                {searchValue && (
+                                    <span
+                                        className="absolute text-base  inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                                        onClick={clearInput}
+                                    >
+                                        <AiFillCloseCircle
+                                            onClick={closeModal} cursor='pointer'
+                                            className='text-black-500' size={20}/>
+                                    </span>
+                                )}
 
                             </div>
 
                         </div>
                         {menuIsOpen && (
                             <ul className=" text-lg font-bold w-full bg-white">
-                                <li className="border-t border-gray-300" onClick={openModal}>
-                                    <div className="flex items-center p-3 ">
-                                        <div className="mr-5">
-                                            <Image src="/assets/icons/map-pin-gray.png" alt="nada" width={13} height={20}/>
+                                {items.map((objeto:any) => (
+                                    <li key={objeto.value} className="border-t border-gray-300"
+                                        onClick={() => openModal(objeto)}>
+                                        <div className="flex items-center p-3 ">
+                                            <div className="mr-5">
+                                                <Image src="/assets/icons/map-pin-gray.png" alt="nada" width={13}
+                                                       height={20}/>
+                                            </div>
+                                            <div>
+                                                <h1 className="text-base font-bold mb-2">{objeto.label}</h1>
+                                                <h1 className="ml-0 text-sm font-bold text-[#9098a4ff] mb-2">{objeto.labe2l}
+                                                    Bordausx</h1>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h1 className="text-base font-bold mb-2">875 Bordausx</h1>
-                                            <h1 className="ml-0 text-sm font-bold text-[#9098a4ff] mb-2">875 Bordausx</h1>
-                                        </div>
-                                    </div>
-                                </li>
-
+                                    </li>
+                                ))}
                             </ul>
                         )}
                     </div>
@@ -86,19 +128,19 @@ export default function Home() {
 
                     modal
                     nested
-                    contentStyle={{maxWidth: '500px',}}
+                    contentStyle={{maxWidth: '400px',}}
                     closeOnDocumentClick={true}
                 >
 
-                    <div className="modal text-right">
+                    <div className="modal text-right p-4">
                         <button
                             style={{color: 'gray', fontWeight: 'bold'}}
                             className="close-button">
                             <AiOutlineClose
                                 onClick={closeModal}
                                 cursor='pointer'
-                                className='text-black-500'
-                                size={25}
+                                className='text-black'
+                                size={22}
                             />
                         </button>
                         <div className=" mx-auto text-center mb-5 p-2">
