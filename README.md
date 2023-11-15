@@ -6,12 +6,8 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# If you like view automated testing execute 
+npm run cypress npm run cypress
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import {ChangeEvent, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import usePlacesAutocomplete, {getGeocode} from "use-places-autocomplete";
 import {AiFillCloseCircle} from "react-icons/ai";
 import {PopupDynamic} from "./popupDynamic";
@@ -21,37 +21,55 @@ const ZIP_CODES = [
     11213
 ];
 
+const messageLocation = {
+    belong: {
+        title: "Address updated",
+        subtitle: "New address to your account",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut emin ad minim veniam, quis nortrud exercitation ulloamco.",
+        footer: "Nisi ut aliquip ex ea commodo consequat."
+    },
+    noBelong: {
+        title: "Out of Delivery Area",
+        subtitle: '"Wherever I go, there I am"',
+        message: "Sadly, this quote is not true for us,In other words, we are not operating in your area (yet), but things change everyday",
+        footer: "Sign up to our newsletter to get notified."
+    }
+}
 
-interface SearchResult {
+
+interface ISearchResult {
     description: string;
 }
 
-export function SearchInput({numberOptions, messageLocation}:any) {
-    const [items, setItems] = useState<SearchResult[]>([]);
+export function SearchInput({numberOptions}: { numberOptions: number }) {
+    const [items, setItems] = useState<ISearchResult[]>([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>(null);
     const [contentModal, setContentModal] = useState<any>({});
 
     const {
-        ready,
         value,
         setValue,
-        suggestions: {status, data},
-        clearSuggestions,
+        suggestions: {data},
     } = usePlacesAutocomplete({debounce: 300, defaultValue: ''});
 
 
     useEffect(() => {
         if (value) {
-            setItems(data.filter((object: SearchResult) => object.description.toLowerCase().includes(value.toLowerCase())).slice(0, numberOptions));
+            setItems(
+                data.filter(
+                    (object: ISearchResult) =>
+                        object.description.toLowerCase().includes(value.toLowerCase())
+                ).slice(0, numberOptions)
+            );
         } else {
             setItems([]);
         }
     }, [data, value]);
 
-    const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-        setValue(inputValue);
+    const handleInput = (event) => {
+        const {target: {value}} = event
+        setValue(value);
         setSelectedItem('')
     };
 
@@ -67,6 +85,7 @@ export function SearchInput({numberOptions, messageLocation}:any) {
     };
 
     const openModal = async (object: any) => {
+        console.log('tiene',object)
         try {
             const results = await getGeocode({address: object.description});
             if (results) {
@@ -75,7 +94,7 @@ export function SearchInput({numberOptions, messageLocation}:any) {
                     (component) => component.types[0].includes("postal_code")
                 );
                 if (zipCodeComponent) {
-                    const zipCode = await ZIP_CODES.find((item:any) => item == zipCodeComponent.long_name)
+                    const zipCode = await ZIP_CODES.find((item: any) => item == zipCodeComponent.long_name)
                     if (zipCode) {
                         setContentModal(messageLocation.belong)
                     } else {
@@ -101,45 +120,46 @@ export function SearchInput({numberOptions, messageLocation}:any) {
 
     return (
         <>
-            <div className=" shadow-black shadow  opacity-75">
+            <div className="shadow-black shadow opacity-75">
                 <div className="relative">
-                    <div className="flex items-center ">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center ">
-              <Image src="/assets/icons/map-pin.png" alt="nada" width={13} height={20}/>
-            </span>
+                    <div className="flex items-center bg-white">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                            <Image src="/assets/icons/map-pin.png" alt="img-point" width={13} height={20}/>
+                        </div>
                         <input
                             type="text"
                             placeholder=""
-                            className="pl-10 p-4 text-base font-bold  w-full custom-input"
+                            className="pl-10 p-4 text-base font-bold w-full custom-input truncate"
                             onInput={handleInput}
                             value={value}
                             onFocus={focusInput}
+                            data-cy="inp_location"
                         />
                         {value && (
-                            <span
-                                className="absolute text-base  inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                                onClick={clearInput}
-                            >
-                <AiFillCloseCircle
-                    onClick={closeModal} cursor='pointer'
-                    className='text-black-500' size={20}/>
-              </span>
+
+                            <AiFillCloseCircle onClick={clearInput} cursor="pointer"
+                                               className=" mr-3 flex items-center cursor-pointer text-black-500"
+                                               size={20}/>
+
                         )}
                     </div>
                 </div>
                 {items.length > 0 && !selectedItem && (
-                    <ul className=" text-lg font-bold w-full bg-white">
-                        {items.map((result: any) => (
-                            <li key={result.description} className="border-t border-gray-300"
-                                onClick={() => openModal(result)}>
-                                <div className="flex items-center p-3 ">
+                    <ul className="text-lg font-bold w-full bg-white">
+                        {items.map((item: any) => (
+                            <li
+                                key={item.description}
+                                className="border-t border-gray-300"
+                                onClick={() => openModal(item)}
+                                data-cy={item.description}
+                            >
+                                <div className="flex items-center p-3">
                                     <div className="mr-5">
-                                        <Image src="/assets/icons/map-pin-gray.png" alt="nada" width={13}
-                                               height={20}/>
+                                        <Image src="/assets/icons/map-pin-gray.png" alt="nada" width={13} height={20}/>
                                     </div>
                                     <div>
-                                        <h1 className="text-base font-bold mb-2">{result.description}</h1>
-                                        <h1 className="ml-0 text-sm font-bold text-[#9098a4ff] mb-2">{result.description}</h1>
+                                        <h1 className="text-left text-base font-bold mb-2">{item.structured_formatting.main_text}</h1>
+                                        <h1 className="ml-0 text-left text-sm font-bold text-gray-400 mb-2">{item.structured_formatting.secondary_text}</h1>
                                     </div>
                                 </div>
                             </li>
@@ -147,8 +167,8 @@ export function SearchInput({numberOptions, messageLocation}:any) {
                     </ul>
                 )}
             </div>
-            <PopupDynamic open={isModalOpen} selectedItem={selectedItem} contentModal={contentModal}
-                          onClose={() => setModalOpen(false)}/>
+            <PopupDynamic open={isModalOpen} contentModal={contentModal}
+                          onClose={setModalOpen}/>
         </>
     );
 }

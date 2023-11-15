@@ -1,6 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
+  scrollBehavior: undefined,
   compilerOptions: {
     target: "es5",
     lib: ["dom", "dom.iterable", "esnext"],
@@ -32,5 +33,5 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-  },
+  }
 });

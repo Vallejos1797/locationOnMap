@@ -4,17 +4,25 @@ import {useEffect, useState} from "react";
 
 const MOBILE_THRESHOLD = 768;
 
-export function PopupDynamic({open, selectedItem, onClose, contentModal}:any) {
-    const [isMobile, setIsMobile] = useState(open);
-    const [isModalOpen, setModalOpen] = useState(false);
+interface IPopupDynamicProps {
+    open: boolean;
+    onClose: (isOpen: boolean) => void;
+    contentModal: {
+        title: string;
+        subtitle: string;
+        message: string;
+        footer: string;
+    };
+}
+
+export function PopupDynamic({open, onClose, contentModal}:IPopupDynamicProps) {
+    const [isMobile, setIsMobile] = useState(false);
 
     const closeModal = () => {
-        setModalOpen(false);
-        onClose(); // Close modal in parent component
+        onClose(false);
     };
 
     useEffect(() => {
-        setModalOpen(open);
         setIsMobile(window.innerWidth < MOBILE_THRESHOLD);
 
         const handleResize = () => {
@@ -31,7 +39,7 @@ export function PopupDynamic({open, selectedItem, onClose, contentModal}:any) {
 
     return (
         <Popup
-            open={isModalOpen}
+            open={open}
             modal
             nested
             contentStyle={{
@@ -85,6 +93,7 @@ export function PopupDynamic({open, selectedItem, onClose, contentModal}:any) {
                                      hover:border-pink-300
                                      hover:text-pink-300
                                   "
+                            data-cy="btn_understood"
                             onClick={closeModal}
                     >UNDERSTOOD
                     </button>
