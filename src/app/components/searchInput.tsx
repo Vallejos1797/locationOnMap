@@ -2,7 +2,7 @@ import Image from 'next/image';
 import {ChangeEvent, useEffect, useState} from "react";
 import usePlacesAutocomplete, {getGeocode} from "use-places-autocomplete";
 import {AiFillCloseCircle} from "react-icons/ai";
-import {PopupDynamic} from "@/app/components/popupDynamic";
+import {PopupDynamic} from "./popupDynamic";
 
 
 const ZIP_CODES = [

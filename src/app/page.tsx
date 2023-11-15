@@ -2,7 +2,8 @@
 import {useEffect} from "react";
 import 'reactjs-popup/dist/index.css';
 import {useGoogleMapsScript, Libraries} from "use-google-maps-script";
-import {SearchInput} from "@/app/components/searchInput";
+import {SearchInput} from "./components/searchInput";
+
 
 const libraries: Libraries = ["places"];
 
