@@ -85,7 +85,6 @@ export function SearchInput({numberOptions}: { numberOptions: number }) {
     };
 
     const openModal = async (object: any) => {
-        console.log('tiene',object)
         try {
             const results = await getGeocode({address: object.description});
             if (results) {
