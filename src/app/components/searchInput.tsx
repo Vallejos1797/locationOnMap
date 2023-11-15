@@ -1,9 +1,9 @@
 import "@reach/combobox/styles.css";
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from "react";
-import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { PopupDynamic } from "@/app/components/popupDynamic";
+import {ChangeEvent, useEffect, useState} from "react";
+import usePlacesAutocomplete, {getGeocode} from "use-places-autocomplete";
+import {AiFillCloseCircle} from "react-icons/ai";
+import {PopupDynamic} from "@/app/components/popupDynamic";
 
 
 const ZIP_CODES = [
@@ -21,42 +21,30 @@ const ZIP_CODES = [
     11355, 11373, 11221, 11203, 11232, 11371, 11218, 11378, 11105, 11102, 11226, 11233, 11375, 11237, 11215, 11354,
     11213
 ];
-const MOBILE_THRESHOLD = 768;
+
 
 interface SearchResult {
     description: string;
 }
 
-export function SearchInput() {
-    const [isMobile, setIsMobile] = useState(false);
+export function SearchInput({numberOptions, messageLocation}) {
     const [items, setItems] = useState<SearchResult[]>([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [contentModal, setContentModal] = useState<any>({});
 
     const {
         ready,
         value,
         setValue,
-        suggestions: { status, data },
+        suggestions: {status, data},
         clearSuggestions,
-    } = usePlacesAutocomplete({ debounce: 300, defaultValue: '' });
+    } = usePlacesAutocomplete({debounce: 300, defaultValue: ''});
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < MOBILE_THRESHOLD);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     useEffect(() => {
         if (value) {
-            setItems(data.filter((object: SearchResult) => object.description.toLowerCase().includes(value.toLowerCase())).slice(0, 3));
+            setItems(data.filter((object: SearchResult) => object.description.toLowerCase().includes(value.toLowerCase())).slice(0, numberOptions));
         } else {
             setItems([]);
         }
@@ -81,23 +69,25 @@ export function SearchInput() {
 
     const openModal = async (object: any) => {
         try {
-            const results = await getGeocode({ address: object.description });
+            const results = await getGeocode({address: object.description});
             if (results) {
                 const addressComponents = results[0].address_components;
                 const zipCodeComponent = addressComponents.find(
                     (component) => component.types[0].includes("postal_code")
                 );
                 if (zipCodeComponent) {
-                    const test = ZIP_CODES.find((item) => item == zipCodeComponent.long_name)
-                    console.log('code zip', zipCodeComponent.long_name)
-                    if (test) {
-                        console.log('hay code ')
+                    const zipCode = await ZIP_CODES.find((item) => item == zipCodeComponent.long_name)
+                    if (zipCode) {
+                        setContentModal(messageLocation.belong)
                     } else {
-                        console.log('no hay')
+                        setContentModal(messageLocation.noBelong)
                     }
+                } else {
+                    setContentModal(messageLocation.noBelong)
                 }
             }
         } catch (error) {
+            // TODO Message error form API
             console.error("Error getting geocode:", error);
         }
         setValue(object.description);
@@ -116,7 +106,7 @@ export function SearchInput() {
                 <div className="relative">
                     <div className="flex items-center ">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center ">
-              <Image src="/assets/icons/map-pin.png" alt="nada" width={13} height={20} />
+              <Image src="/assets/icons/map-pin.png" alt="nada" width={13} height={20}/>
             </span>
                         <input
                             type="text"
@@ -133,12 +123,12 @@ export function SearchInput() {
                             >
                 <AiFillCloseCircle
                     onClick={closeModal} cursor='pointer'
-                    className='text-black-500' size={20} />
+                    className='text-black-500' size={20}/>
               </span>
                         )}
                     </div>
                 </div>
-                {items.length > 0 &&!selectedItem && (
+                {items.length > 0 && !selectedItem && (
                     <ul className=" text-lg font-bold w-full bg-white">
                         {items.map((result: any) => (
                             <li key={result.description} className="border-t border-gray-300"
@@ -146,7 +136,7 @@ export function SearchInput() {
                                 <div className="flex items-center p-3 ">
                                     <div className="mr-5">
                                         <Image src="/assets/icons/map-pin-gray.png" alt="nada" width={13}
-                                               height={20} />
+                                               height={20}/>
                                     </div>
                                     <div>
                                         <h1 className="text-base font-bold mb-2">{result.description}</h1>
@@ -158,7 +148,8 @@ export function SearchInput() {
                     </ul>
                 )}
             </div>
-            <PopupDynamic open={isModalOpen} selectedItem={selectedItem} onClose={() => setModalOpen(false)} />
+            <PopupDynamic open={isModalOpen} selectedItem={selectedItem} contentModal={contentModal}
+                          onClose={() => setModalOpen(false)}/>
         </>
     );
 }

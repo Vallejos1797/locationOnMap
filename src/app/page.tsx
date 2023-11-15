@@ -6,6 +6,20 @@ import {SearchInput} from "@/app/components/searchInput";
 
 const libraries: Libraries = ["places"];
 
+const messageLocation = {
+    belong: {
+        title: "Address updated",
+        subtitle: "New address to your account",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut emin ad minim veniam, quis nortrud exercitation ulloamco.",
+        footer: "Nisi ut aliquip ex ea commodo consequat."
+    },
+    noBelong: {
+        title: "Out of Delivery Area",
+        subtitle: '"Wherever I go, there I am"',
+        message: "Sadly, this quote is not true for us,In other words, we are not operating in your area (yet), but things change everyday",
+        footer: "Sign up to our newsletter to get notified."
+    }
+}
 
 export default function Home() {
 
@@ -15,11 +29,10 @@ export default function Home() {
         libraries,
     });
     useEffect(() => {
-        // This effect runs after the component is mounted
         if (isLoaded) {
-            console.log('consume');
+           // TODO MESSAGE
         } else if (loadError) {
-            console.log('error consuming the API');
+            // TODO MESSAGE
         }
     }, [isLoaded, loadError]);
 
@@ -34,7 +47,7 @@ export default function Home() {
                             stuff</label>
                         <label className=" text-sm mt-3 text-[#9098a4ff]">We won´t share your address</label>
                         <label className="text-sm mb-10 text-[#9098a4ff]">with your ex (or whoever).</label>
-                        <SearchInput />
+                        <SearchInput numberOptions={3} messageLocation={messageLocation}/>
 
                     </div>}
             </main>

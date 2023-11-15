@@ -1,10 +1,10 @@
 import Popup from "reactjs-popup";
-import { AiOutlineClose } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import {AiOutlineClose} from "react-icons/ai";
+import {useEffect, useState} from "react";
 
 const MOBILE_THRESHOLD = 768;
 
-export function PopupDynamic({ open, selectedItem, onClose }) {
+export function PopupDynamic({open, selectedItem, onClose, contentModal}) {
     const [isMobile, setIsMobile] = useState(open);
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -35,13 +35,13 @@ export function PopupDynamic({ open, selectedItem, onClose }) {
             modal
             nested
             contentStyle={{
-                maxWidth: 'lg:max-w-screen-sm sm:max-w-screen-md', width: isMobile ? '80%' : '30%',
+                maxWidth: 'lg:max-w-screen-sm sm:max-w-screen-md', width: isMobile ? '80%' : '29%',
             }}
-            closeOnDocumentClick={true}
+            closeOnDocumentClick={false}
         >
             <div className="modal text-right p-4">
                 <button
-                    style={{ color: 'gray', fontWeight: 'bold' }}
+                    style={{color: 'gray', fontWeight: 'bold'}}
                     className="close-button">
                     <AiOutlineClose
                         onClick={closeModal}
@@ -51,14 +51,15 @@ export function PopupDynamic({ open, selectedItem, onClose }) {
                     />
                 </button>
                 <div className=" mx-auto text-center mb-5 p-2">
-                    <h1 className="text-xl text-black font-bold m-5">Address updated</h1>
-                    <h2 className="text-base text-black font-bold m-4 ">New address to your account</h2>
-                    <h2 className="mt-3   text-base">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Ut emin ad minim veniam, quis nortrud
-                        exercitation ulloamco.
+                    <h1 className="text-xl text-black font-bold m-5">{contentModal.title}</h1>
+                    <h2 className="text-base text-black font-bold m-4 ">{contentModal.subtitle}</h2>
+                    <h2 className="mt-3  px-8 text-base">
+                        {contentModal.message}
                     </h2>
-                    <h2 className="text-black text-base m-4">Nisi ut aliquip ex ea commodo consequat</h2>
+                    <h2 className="text-black text-base m-4">
+                        {contentModal.footer}
+
+                    </h2>
                     <br/>
                     <br/>
                     <br/>
@@ -78,6 +79,7 @@ export function PopupDynamic({ open, selectedItem, onClose }) {
                                      text-white
                                      focus:outline-none
                                      rounded-full
+                                     border
                                      border-gray-200
                                      hover:bg-white
                                      hover:border-pink-300
