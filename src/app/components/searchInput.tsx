@@ -1,4 +1,3 @@
-import "@reach/combobox/styles.css";
 import Image from 'next/image';
 import {ChangeEvent, useEffect, useState} from "react";
 import usePlacesAutocomplete, {getGeocode} from "use-places-autocomplete";
