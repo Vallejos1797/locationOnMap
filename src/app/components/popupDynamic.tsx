@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 
 const MOBILE_THRESHOLD = 768;
 
-export function PopupDynamic({open, selectedItem, onClose, contentModal}) {
+export function PopupDynamic({open, selectedItem, onClose, contentModal}:any) {
     const [isMobile, setIsMobile] = useState(open);
     const [isModalOpen, setModalOpen] = useState(false);
 

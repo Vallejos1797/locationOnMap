@@ -26,7 +26,7 @@ interface SearchResult {
     description: string;
 }
 
-export function SearchInput({numberOptions, messageLocation}) {
+export function SearchInput({numberOptions, messageLocation}:any) {
     const [items, setItems] = useState<SearchResult[]>([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -75,7 +75,7 @@ export function SearchInput({numberOptions, messageLocation}) {
                     (component) => component.types[0].includes("postal_code")
                 );
                 if (zipCodeComponent) {
-                    const zipCode = await ZIP_CODES.find((item) => item == zipCodeComponent.long_name)
+                    const zipCode = await ZIP_CODES.find((item:any) => item == zipCodeComponent.long_name)
                     if (zipCode) {
                         setContentModal(messageLocation.belong)
                     } else {
