@@ -32,7 +32,6 @@ export function SearchInput({numberOptions}: IOptions) {
     }, [data, value]);
 
     const handleSearchResults = (status, value, data) => {
-        console.log('--->', status)
         if (status === 'OK') {
             handleOkStatus(value, data);
         } else if (status === 'ZERO_RESULTS') {
