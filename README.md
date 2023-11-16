@@ -9,7 +9,7 @@ First, run the development server:
 # Run the project in development mode
 npm run dev
 # If you like view automated testing, run 2 commands the same time:
-npm run cypress npm 
+npm run dev  
 npm run cypress
 # If you want to update the publication in Vercel, run in terminal:
 # 1.- npm run cypress

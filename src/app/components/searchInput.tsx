@@ -7,8 +7,6 @@ import {toast} from "react-toastify";
 import {messageLocation, ZIP_CODES} from "../config/constants";
 
 
-
-
 interface ISearchResult {
     description: string;
 }
@@ -59,13 +57,13 @@ export function SearchInput({numberOptions}: IOptions) {
 
     const handleZeroResults = () => {
         setItems([]);
-        toast.warning('Input new value, no results found recommended', {autoClose: 2000});
+        toast.warning('Suggestions not found ', {autoClose: 2000});
     };
 
     const handleErrorMessage = () => {
         toast.error(
             <div>
-                CHECK CONNECTION <br/>
+                UNKNOWN ERROR<br/>
                 Error fetching data
             </div>,
             {autoClose: 2000}
@@ -110,7 +108,6 @@ export function SearchInput({numberOptions}: IOptions) {
                 CHECK CONNECTION <br/>
                 Error fetching data
             </div>, {autoClose: 2000});
-            console.error("Error getting geocode:", error);
         }
     };
 

@@ -28,7 +28,7 @@ export default function Home() {
     return (
 
             <main className="max-w-4xl mx-auto mt-4 p-4">
-                <ToastContainer/>
+                <ToastContainer limit={1}/>
                 {isLoaded &&
                     <div className="text-center my-5 flex flex-col ">
                         <label className="text-2xl text-black font-bold">Where are you located?</label>
