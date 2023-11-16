@@ -32,6 +32,7 @@ export function SearchInput({numberOptions}: IOptions) {
     }, [data, value]);
 
     const handleSearchResults = (status, value, data) => {
+        console.log('--->', status)
         if (status === 'OK') {
             handleOkStatus(value, data);
         } else if (status === 'ZERO_RESULTS') {
@@ -59,20 +60,23 @@ export function SearchInput({numberOptions}: IOptions) {
 
     const handleZeroResults = () => {
         setItems([]);
-        if (!controlToast){
+        if (!controlToast) {
             setControlToast(true)
             toast.warning('Suggestions not found ', {autoClose: 2000});
         }
     };
 
     const handleErrorMessage = () => {
-        toast.error(
-            <div>
-                UNKNOWN ERROR<br/>
-                Error fetching data
-            </div>,
-            {autoClose: 2000}
-        );
+        if (!controlToast) {
+            setControlToast(true)
+            toast.error(
+                <div>
+                    UNKNOWN ERROR<br/>
+                    Error fetching data
+                </div>,
+                {autoClose: 2000}
+            );  }
+
     };
 
     const handleInput = (event) => {
