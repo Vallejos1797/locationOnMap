@@ -4,6 +4,9 @@ import 'reactjs-popup/dist/index.css';
 import {useGoogleMapsScript, Libraries} from "use-google-maps-script";
 import {SearchInput} from "./components/searchInput";
 import dotenv from 'dotenv';
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 dotenv.config();
 
 const libraries: Libraries = ["places"];
@@ -18,17 +21,15 @@ export default function Home() {
     });
 
     useEffect(() => {
-
-        if (isLoaded) {
-            // TODO MESSAGE
-        } else if (loadError) {
-            // TODO MESSAGE
+        if (loadError) {
+            toast.error('Error loading Google Maps script', {autoClose: 2000});
         }
     }, [isLoaded, loadError]);
 
     return (
         <div className=" min-h-screen">
             <main className="max-w-4xl mx-auto mt-4 p-4">
+                <ToastContainer/>
                 {isLoaded &&
                     <div className="text-center my-5 flex flex-col ">
                         <label className="text-2xl text-black font-bold">Where are you located?</label>
@@ -36,7 +37,7 @@ export default function Home() {
                             stuff</label>
                         <label className=" text-sm mt-3 text-gray-400">We won´t share your address</label>
                         <label className="text-sm mb-10 text-gray-400">with your ex (or whoever).</label>
-                        <SearchInput numberOptions={3} />
+                        <SearchInput numberOptions={3}/>
                     </div>}
             </main>
         </div>
