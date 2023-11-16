@@ -20,6 +20,7 @@ export function SearchInput({numberOptions}: IOptions) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>(null);
     const [contentModal, setContentModal] = useState<any>({});
+    const [controlToast, setControlToast] = useState<any>(false);
 
     const {
         value,
@@ -27,12 +28,12 @@ export function SearchInput({numberOptions}: IOptions) {
         suggestions: {data, status},
     } = usePlacesAutocomplete({debounce: 300, defaultValue: ''});
     useEffect(() => {
-        handleSearchResults(status, value, data, numberOptions);
+        handleSearchResults(status, value, data);
     }, [data, value]);
 
-    const handleSearchResults = (status, value, data, numberOptions) => {
+    const handleSearchResults = (status, value, data) => {
         if (status === 'OK') {
-            handleOkStatus(value, data, numberOptions);
+            handleOkStatus(value, data);
         } else if (status === 'ZERO_RESULTS') {
             handleZeroResults();
         } else if (status === 'ERROR' || status === 'UNKNOWN_ERROR') {
@@ -40,10 +41,11 @@ export function SearchInput({numberOptions}: IOptions) {
         }
     };
 
-    const handleOkStatus = (value, data, numberOptions) => {
+    const handleOkStatus = (value, data) => {
         if (value) {
             const locations = filterLocationsByValue(value, data).slice(0, numberOptions);
             setItems(locations);
+            setControlToast(false)
         } else {
             setItems([]);
         }
@@ -57,7 +59,10 @@ export function SearchInput({numberOptions}: IOptions) {
 
     const handleZeroResults = () => {
         setItems([]);
-        toast.warning('Suggestions not found ', {autoClose: 2000});
+        if (!controlToast){
+            setControlToast(true)
+            toast.warning('Suggestions not found ', {autoClose: 2000});
+        }
     };
 
     const handleErrorMessage = () => {
