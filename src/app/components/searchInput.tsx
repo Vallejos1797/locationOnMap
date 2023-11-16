@@ -92,9 +92,9 @@ export function SearchInput({numberOptions}: IOptions) {
 
     const openModal = async (object: any) => {
         try {
-            const results = await getGeocode({address: object.description});
-            if (results) {
-                const zipcode = +await getZipCode(results[0], true);
+            const location = await getGeocode({address: object.description});
+            if (location) {
+                const zipcode = +await getZipCode(location[0], true);
                 if (zipcode && ZIP_CODES.includes(zipcode)) {
                     setContentModal(messageLocation.belong)
                 } else {
@@ -112,7 +112,6 @@ export function SearchInput({numberOptions}: IOptions) {
             </div>, {autoClose: 2000});
             console.error("Error getting geocode:", error);
         }
-
     };
 
     return (

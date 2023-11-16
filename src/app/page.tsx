@@ -6,6 +6,7 @@ import {SearchInput} from "./components/searchInput";
 import dotenv from 'dotenv';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {API_KEY} from "./config/constants";
 
 dotenv.config();
 
@@ -13,10 +14,8 @@ const libraries: Libraries = ["places"];
 
 
 export default function Home() {
-
-
     const {isLoaded, loadError} = useGoogleMapsScript({
-        googleMapsApiKey: process.env.NEXT_PUBLIC_REACT_APP_API_URL,
+        googleMapsApiKey: API_KEY,
         libraries,
     });
 
@@ -27,7 +26,7 @@ export default function Home() {
     }, [isLoaded, loadError]);
 
     return (
-        <div className=" min-h-screen">
+
             <main className="max-w-4xl mx-auto mt-4 p-4">
                 <ToastContainer/>
                 {isLoaded &&
@@ -40,6 +39,6 @@ export default function Home() {
                         <SearchInput numberOptions={3}/>
                     </div>}
             </main>
-        </div>
+
     )
 }

@@ -1,9 +1,5 @@
 import Popup from "reactjs-popup";
 import {AiOutlineClose} from "react-icons/ai";
-import {useEffect, useState} from "react";
-import {MOBILE_DISPOSITIVE} from "../config/constants";
-
-
 
 interface IPopupDynamicProps {
     open: boolean;
@@ -17,29 +13,21 @@ interface IPopupDynamicProps {
 }
 
 export function PopupDynamic({open, onClose, contentModal}:IPopupDynamicProps) {
-    const [isMobile, setIsMobile] = useState(false);
 
     const closeModal = () => {
         onClose(false);
     };
 
-    useEffect(() => {
-        setIsMobile(window.innerWidth < MOBILE_DISPOSITIVE);
-    }, [open]);
 
     return (
         <Popup
             open={open}
             modal
             nested
-            contentStyle={{
-                maxWidth: 'lg:max-w-screen-sm sm:max-w-screen-md', width: isMobile ? '80%' : '29%',
-            }}
             closeOnDocumentClick={false}
         >
             <div className="modal text-right p-4">
                 <button
-
                     className="close-button font-bold text-gray">
                     <AiOutlineClose
                         onClick={closeModal}

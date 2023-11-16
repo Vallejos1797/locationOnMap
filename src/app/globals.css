@@ -7,10 +7,29 @@
 body {
     background-color:#f1f2f4;
 }
+
 .custom-input:focus {
     outline: none;
     border: none;
 }
 
 
+.popup-overlay {
+    background: rgba(248,249,250,0.51) !important
+}
 
+/* Case Computer */
+@media only screen and (min-width: 769px) {
+    .popup-content {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        width: 39% !important;
+    }
+}
+
+/* Case Mobil */
+@media only screen and (max-width: 768px) {
+    .popup-content {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        width: 80% !important;
+    }
+}

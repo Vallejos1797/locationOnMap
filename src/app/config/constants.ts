@@ -28,4 +28,4 @@ export const messageLocation = {
     }
 }
 
-export const MOBILE_DISPOSITIVE = 768;
+export const  API_KEY=process.env.NEXT_PUBLIC_REACT_APP_API_URL
