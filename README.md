@@ -17,6 +17,7 @@ npm run build
 # 2.- verccel 
 npm run vercel
 
+Note: .env.develop added only for development purposes.
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
